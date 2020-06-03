@@ -83,8 +83,6 @@ class Creature:
 
 	# build this creature provided with two parents and a mutation rate
 	def __breed_parents(self, c1, c2, epsilon):
-		#print("###")
-
 		# starting position ranges
 		starting_pos_x_range = (min(c1.pos[0],c2.pos[0]),max(c1.pos[0],c2.pos[0]))
 		starting_pos_y_range = (min(c1.pos[1],c2.pos[1]),max(c1.pos[1],c2.pos[1]))
@@ -109,9 +107,8 @@ class Creature:
 			vertex_range = (lower_vertex_count, upper_vertex_count)
 
 		# pick a vertex count
-		#print(vertex_range)
 		new_num_vertices = random.randint(lower_vertex_count,upper_vertex_count)
-		#print(new_num_vertices)
+
 		# creature polygon including all vertices from both parents. Then, continually merge
 		# the two closest points until we have reached the new_num_vertices count.
 		combined_polar_coordinates = c1.polar_coordinates + c2.polar_coordinates
@@ -149,7 +146,6 @@ class Creature:
 		dist_list.sort(key=lambda tup: tup[0])
 
 		while len(coords) > count:
-			#print("Closest: {0} {0}".format(dist_list[1],dist_list[2]))
 			# average the magnitude and degrees to create a new polar coordinate
 			new_coord = ((dist_list[0][1][0] + dist_list[0][2][0]) / 2.00, (dist_list[0][1][1] + dist_list[0][2][1]) / 2.00)
 
@@ -163,7 +159,6 @@ class Creature:
 			# add new coordinate to list of coordinates
 			coords.append(new_coord)
 
-			#print(len(dist_list))
 			# remove all distances that used the merged coordinates
 			dist_list = [v for v in dist_list if v[1] != tup_1 and v[1] != tup_2 and v[2] != tup_1 and v[2] != tup_2]
 			
@@ -172,13 +167,10 @@ class Creature:
 			for i in range(len(coords)-1):
 				dist = self.__polar_coordinate_distance(coords[i], coords[len(coords)-1])
 				dist_list.append((dist, coords[i],coords[len(coords)-1]))
-			#print(len(dist_list))
 
 			# sort by distance
 			dist_list.sort(key=lambda tup: tup[0])
 
-		#print(len(coords),count)
-		#print(coords)
 		return coords
 
 	# calculates the distance between 2 polar coordinates
@@ -201,9 +193,6 @@ class Creature:
 	# generates random polar coordinates between min_coords (default 3) and max_coords, with a magnitude for each polar coordinate
 	# between 1 and max_magnitude
 	def __generate_random_polar_coordinates(self,max_coords,min_coords=3):
-
-		#return [(10,45),(10,135),(10,225),(10,315)]
-
 		# randomly select a number of coordinates for the shape
 		num_coordinates = random.randint(min_coords,(max(min_coords, max_coords)))
 
@@ -272,18 +261,11 @@ class Creature:
 			self.lowest_y = curr_lowest_y
 			self.time_of_low_point = self.age
 
-
-		# if the shape is a certain age and has a very low velocity, kill it
-		# if self.age > self.species_age / 5.00 and self.mag(self.shape.body.velocity) < 0.01:
-		# 	return 1
-
 		self.age += simulation_steps
 
 		# if the shape has 'lived' for the lifetime of the species
 		if self.age >= self.species_age:
 			return 1
-
-		
 
 		return 0
 

@@ -38,7 +38,6 @@ class Overlord:
 		self.creatures = []
 		for i in range(self.population_size):
 			c = Creature(self.creation_bounds)
-			# c.build_creature(self.space)
 			self.creatures.append(c)
 
 		# sidebar creatures
@@ -105,7 +104,6 @@ class Overlord:
 		life_cycle = current_creature.update(self.simulation_step)
 
 		# if life cycle is complete (== 1), record best scores for the creature and select the next creature
-		# if 
 		if life_cycle == 1:
 			self.fitness_scores[self.current_creature_ind] = (current_creature.lowest_y, current_creature.time_of_low_point)
 			self.remove_creature_from_space(current_creature)
@@ -119,7 +117,6 @@ class Overlord:
 
 
 	def update_population(self):
-		#self.print_population_scores()
 
 		zip_list = zip(self.fitness_scores,self.creatures)
 
@@ -132,7 +129,6 @@ class Overlord:
 		# sort scores by fitness rating in descending order
 		sorted_scores.sort(key=lambda t:t[0],reverse=True)
 
-		#print("Current pop: " + str(self.creatures))
 		# delete worst 2 members
 		sorted_scores.pop()
 		sorted_scores.pop()
@@ -142,14 +138,12 @@ class Overlord:
 		p2 = sorted_scores[1][1]
 		new_creature = Creature(self.creation_bounds,[p1,p2],self.epsilon)
 		self.creatures = [new_creature]
-		#print(len(sorted_scores))
+		
 		for v in sorted_scores:
 			self.creatures.append(v[1])
 
 		# add a completely random member to the population
 		self.creatures.append(Creature(self.creation_bounds))
-
-		#print("New pop: " + str(self.creatures))
 
 		# repopulate sidebar with new population
 		self.sidebar_creatures = self.populate_sidebar(refresh=True)
@@ -183,16 +177,10 @@ class Overlord:
 		# wipe the screen
 		self.screen.fill((255,255,255))
 
-		# p1 = random.choice(self.creatures)
-		# p2 = random.choice(self.creatures)
-		# c = Creature(self.creation_bounds, parents=(p1, p2))
-		# c.build_creature(self.space)
-
 		# test a creature. Once a creature has completed testing, the next creature will be tested.
 		# after all creatures have been tested, the epoch ends, the population is updated, and we repeat
 		self.test_creatures()
 		
-
 		# draw all objects attatched to the space
 		self.space.debug_draw(self.draw_options)
 

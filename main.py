@@ -35,17 +35,6 @@ def start_simulation():
 	    # Overlord update
 	    OVR.update()
 
-
-
-
-
-
-
-
-
-
-
-
 if __name__ == '__main__':
     start_simulation()
 
